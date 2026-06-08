@@ -160,8 +160,8 @@ FAISS similarity search
 
 | Scenario | Result |
 |---|---|
-| LLM temp within ±5°C of API temp | ✅ **Accurate** |
-| LLM temp differs by more than 5°C | ⚠️ **Possible Hallucination** |
+| LLM temp within ±3°C of API temp | ✅ **Accurate** |
+| LLM temp differs by more than 3°C | ⚠️ **Possible Hallucination** |
 | LLM didn't mention a temperature | ℹ️ **Unverified** |
 
 ---
