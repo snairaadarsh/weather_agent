@@ -1,0 +1,60 @@
+"""
+data_setup.py
+-------------
+Run this ONCE to generate:
+  - weather.csv   (historical weather data)
+  - weather.db    (same data in SQLite)
+
+Usage:
+  python data_setup.py
+"""
+
+import pandas as pd
+import sqlite3
+import os
+
+# ── Sample historical weather data ───────────────────────────────────────────
+RECORDS = [
+    ("Delhi",     "2024-01-15", 18, "Foggy",      65, 8),
+    ("Delhi",     "2024-06-10", 42, "Hot",         30, 15),
+    ("Mumbai",    "2024-01-15", 28, "Humid",       80, 12),
+    ("Mumbai",    "2024-06-10", 33, "Rainy",       90, 10),
+    ("Chennai",   "2024-01-15", 27, "Sunny",       70, 14),
+    ("Chennai",   "2024-06-10", 35, "Hot",         60, 20),
+    ("Kolkata",   "2024-01-15", 22, "Cloudy",      75, 10),
+    ("Kolkata",   "2024-06-10", 36, "Humid",       85, 12),
+    ("Bangalore", "2024-01-15", 20, "Pleasant",    55, 10),
+    ("Bangalore", "2024-06-10", 26, "Rainy",       80, 15),
+    ("Hyderabad", "2024-01-15", 24, "Clear",       50, 12),
+    ("Hyderabad", "2024-06-10", 38, "Hot",         40, 18),
+    ("Pune",      "2024-01-15", 21, "Sunny",       45, 10),
+    ("Pune",      "2024-06-10", 32, "Partly Cloudy", 55, 20),
+    ("Jaipur",    "2024-01-15", 16, "Cold",        35, 8),
+    ("Jaipur",    "2024-06-10", 44, "Scorching",   20, 22),
+    ("Ahmedabad", "2024-01-15", 20, "Clear",       40, 10),
+    ("Ahmedabad", "2024-06-10", 43, "Hot",         25, 20),
+    ("Lucknow",   "2024-01-15", 15, "Foggy",       70, 6),
+    ("Lucknow",   "2024-06-10", 41, "Hot",         35, 16),
+]
+
+COLUMNS = ["city", "date", "temperature_c", "condition", "humidity_pct", "wind_kmh"]
+
+
+def create_csv(path="weather.csv"):
+    df = pd.DataFrame(RECORDS, columns=COLUMNS)
+    df.to_csv(path, index=False)
+    print(f"[✓] CSV created → {path}  ({len(df)} rows)")
+    return df
+
+
+def create_db(df, path="weather.db"):
+    conn = sqlite3.connect(path)
+    df.to_sql("weather", conn, if_exists="replace", index=False)
+    conn.close()
+    print(f"[✓] SQLite DB created → {path}")
+
+
+if __name__ == "__main__":
+    df = create_csv()
+    create_db(df)
+    print("\nAll done! Run main.py next.")
